@@ -1,0 +1,7 @@
+# Comments and blank lines are supported.
+# The script will filter out duplicates.
+
+sub.example1.com             -->       https://sub.example1.com/login
+sub.example1.com             -->       https://sub.example1.com/login
+    example1.com             -->       https://sub.example1.com/login
+test-123.example2.com        -->       https://this-does-not-even-exist.com/
