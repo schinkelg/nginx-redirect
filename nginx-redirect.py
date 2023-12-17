@@ -31,6 +31,6 @@ for key in vhosts:
         f"listen 80; listen [::]:80; "
         f"server_name {server_names}; "
         f"root {root_directory}; "
-        f"location /.wel {{try_files $uri =404;}} "
+        f"location /.well-known/ {{try_files $uri =404;}} "
         f"location / {{return 302 {key};}}}}"
     )
