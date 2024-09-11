@@ -7,29 +7,27 @@ from collections import defaultdict
 root_directory = "/var/www/html"
 vhosts = defaultdict(set)
 
-for line in sys.stdin.readlines():
+pattern = re.compile(r"^([a-zA-Z0-9.-]+)\s+-->\s+(http[a-zA-Z0-9-./:]+)$")
+
+for line in sys.stdin:
     line = line.strip()
-    if not line:  # skip empty lines
+    if not line or line.startswith("#"):
         continue
 
-    if line[0] == "#":  # skip comments
-        continue
-
-    m = re.search("^([a-zA-Z0-9.-]+)[\\s]+-->[\\s]+(http[a-zA-Z0-9-./:]+)$", line)
-    if not m:
+    match = pattern.match(line)
+    if not match:
         print(f"# Parse error: {line}.", file=sys.stderr)
         continue
 
-    vhosts[m.group(2)].add(m.group(1))
-
+    vhosts[match.group(2)].add(match.group(1))
 
 print("# Auto-generated file. Please don't make changes to this file, they will be overwritten.")
-for key in vhosts:
-    server_names = " ".join(vhosts[key])
+for key, server_names in vhosts.items():
+    server_names_str = " ".join(server_names)
     print(
         f"server {{ "
         f"listen 80; listen [::]:80; "
-        f"server_name {server_names}; "
+        f"server_name {server_names_str}; "
         f"root {root_directory}; "
         f"location /.well-known/ {{try_files $uri =404;}} "
         f"location / {{return 302 {key};}}}}"
