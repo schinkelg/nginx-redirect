@@ -27,6 +27,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8
+        apt install -y nginx
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
@@ -35,4 +36,6 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Basic test
-      run: python nginx-redirect.py < example.txt
+      run: python nginx-redirect.py < example.txt > vhost.txt
+    - name: Test config
+      run: nginx -t -c ./vhost.txt
