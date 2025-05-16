@@ -37,7 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Basic test
       run: |
-        sudo bash -c 'python nginx-redirect.py < example.txt > vhost.conf'
+        sudo bash -c 'python nginx-redirect.py < example.txt > /etc/nginx/sites-available/vhost.conf'
         sudo ln -s /etc/nginx/sites-available/vhost.conf /etc/nginx/sites-enabled/vhost.conf
     - name: Test Nginx config
       run: nginx -t
