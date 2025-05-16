@@ -38,4 +38,4 @@ jobs:
     - name: Basic test
       run: python nginx-redirect.py < example.txt > vhost.txt
     - name: Test config
-      run: nginx -t -c ./vhost.txt
+      run: nginx -t -c ${{ github.workspace }}/vhost.txt
